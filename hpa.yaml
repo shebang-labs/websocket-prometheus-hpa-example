@@ -1,0 +1,21 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  labels:
+    app.kubernetes.io/name: myapp
+  name: myapp
+  namespace: myapp-namespace
+spec:
+  maxReplicas: 30
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: myapp
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Pods
+      pods:
+        metricName: myapp_websockets_connections_avg
+        targetAverageValue: 5 # 5 websocket connections per pod
